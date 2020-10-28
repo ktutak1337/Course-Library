@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  api:
+    build: ../../                                   # or use image: name_your_image
+    container_name: CourseLibrary-api
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - '5000:5000'
+    networks:
+      - CourseLibrary
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root             # set your container root username
+      - MONGO_INITDB_ROOT_PASSWORD=secret           # set your container root password
+    ports:
+      - 27017:27017
+    networks:
+      - CourseLibrary
+    volumes:
+      - mongo:/data/db
+
+networks:
+  CourseLibrary:
+    name: CourseLibrary-network
+
+volumes:
+  mongo:
+    driver: local
