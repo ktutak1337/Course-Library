@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using CourseLibrary.Infrastructure.Persistence.Mongo.Repositories.Identity;
 
 namespace CourseLibrary.Infrastructure
 {
@@ -19,10 +20,12 @@ namespace CourseLibrary.Infrastructure
         public static IConveyBuilder AddInfrastructure(this IConveyBuilder builder)
         {
             builder.Services.AddTransient<IOrdersRepository, OrdersRepository>();
+            builder.Services.AddTransient<IUsersRepository, UsersRepository>();
             builder.Services.AddTransient<IDispatcher, Dispatcher>();
             return builder
                 .AddMongo()
-                .AddMongoRepository<OrderDocument, Guid>("orders");
+                .AddMongoRepository<OrderDocument, Guid>("orders")
+                .AddMongoRepository<OrderDocument, Guid>("users");
         }
         
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
@@ -30,8 +33,6 @@ namespace CourseLibrary.Infrastructure
             services.AddSwaggerDocs();
             return services;
         }
-        
-
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder)
             => builder.UseSwaggerDocs();
