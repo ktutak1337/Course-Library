@@ -1,8 +1,6 @@
 using System;
 using CourseLibrary.Application.Services;
 using CourseLibrary.Core.Repositories;
-using CourseLibrary.Infrastructure.Persistence.Mongo.Documents;
-using CourseLibrary.Infrastructure.Persistence.Mongo.Repositories;
 using CourseLibrary.Infrastructure.Services;
 using CourseLibrary.Infrastructure.Swagger;
 using Convey;
@@ -12,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using CourseLibrary.Infrastructure.Persistence.Mongo.Repositories.Identity;
+using CourseLibrary.Infrastructure.Persistence.Mongo.Documents.Identity;
 
 namespace CourseLibrary.Infrastructure
 {
@@ -19,13 +18,11 @@ namespace CourseLibrary.Infrastructure
     {
         public static IConveyBuilder AddInfrastructure(this IConveyBuilder builder)
         {
-            builder.Services.AddTransient<IOrdersRepository, OrdersRepository>();
             builder.Services.AddTransient<IUsersRepository, UsersRepository>();
             builder.Services.AddTransient<IDispatcher, Dispatcher>();
             return builder
                 .AddMongo()
-                .AddMongoRepository<OrderDocument, Guid>("orders")
-                .AddMongoRepository<OrderDocument, Guid>("users");
+                .AddMongoRepository<UserDocument, Guid>("users");
         }
         
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
