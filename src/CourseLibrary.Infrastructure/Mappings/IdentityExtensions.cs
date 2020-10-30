@@ -15,7 +15,6 @@ namespace CourseLibrary.Infrastructure.Mappings
                 Role = user.Role,
                 IsActive = user.IsActive,
                 CreatedAt = user.CreatedAt,
-                UpdatedAt = user.UpdatedAt
             };
 
         public static User AsEntity(this UserDocument document)
@@ -24,9 +23,8 @@ namespace CourseLibrary.Infrastructure.Mappings
                 document.Email,
                 document.Password,
                 document.Role,
-                document.IsActive,
                 document.CreatedAt,
-                document.UpdatedAt);
+                document.IsActive);
 
         public static UserDto AsDto(this UserDocument document)
             => new UserDto
@@ -36,8 +34,7 @@ namespace CourseLibrary.Infrastructure.Mappings
                 Password = document.Password,
                 Role = document.Role,
                 IsActive = document.IsActive,
-                CreatedAt = document.CreatedAt,
-                UpdatedAt = document.UpdatedAt
+                CreatedAt = document.CreatedAt
             };   
     }
 }

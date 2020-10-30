@@ -11,15 +11,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using CourseLibrary.Infrastructure.Persistence.Mongo.Repositories.Identity;
 using CourseLibrary.Infrastructure.Persistence.Mongo.Documents.Identity;
+using Convey.Auth;
+using CourseLibrary.Infrastructure.Services.Auth;
+using Microsoft.AspNetCore.Identity;
 
 namespace CourseLibrary.Infrastructure
 {
     public static class Extensions
     {
         public static IConveyBuilder AddInfrastructure(this IConveyBuilder builder)
-        {
-            builder.Services.AddTransient<IUsersRepository, UsersRepository>();
-            builder.Services.AddTransient<IDispatcher, Dispatcher>();
+        {      
+            builder.AddJwt();
+            
             return builder
                 .AddMongo()
                 .AddMongoRepository<UserDocument, Guid>("users");
@@ -27,12 +30,24 @@ namespace CourseLibrary.Infrastructure
         
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.AddSingleton<IJwtBroker, JwtBroker>();
+            services.AddSingleton<IPasswordService, PasswordService>();
+            services.AddSingleton<IPasswordHasher<IPasswordService>, PasswordHasher<IPasswordService>>();
+            
+            services.AddTransient<IUsersRepository, UsersRepository>();
+            services.AddTransient<IDispatcher, Dispatcher>();
+
             services.AddSwaggerDocs();
             return services;
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder)
-            => builder.UseSwaggerDocs();
+        {
+            builder.UseAuthentication();
+            builder.UseSwaggerDocs();
+
+            return builder;
+        }
 
         public static IServiceCollection AddSwaggerDocs(this IServiceCollection services)
         {

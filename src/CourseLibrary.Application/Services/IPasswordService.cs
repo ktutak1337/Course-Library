@@ -1,4 +1,4 @@
-namespace CourseLibrary.Application.Services.Identity.Interfaces
+namespace CourseLibrary.Application.Services
 {
     public interface IPasswordService
     {

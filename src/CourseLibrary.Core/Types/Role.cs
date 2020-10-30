@@ -7,7 +7,7 @@ namespace CourseLibrary.Core.Types
 
         public static bool IsValid(string role)
         {
-            if (string.IsNullOrWhiteSpace(role))
+            if (role.IsEmpty())
             {
                 return false;
             }
