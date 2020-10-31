@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Convey.Persistence.MongoDB;
 using CourseLibrary.Core.Aggregates;
@@ -20,7 +22,7 @@ namespace CourseLibrary.Infrastructure.Persistence.Mongo.Repositories.Identity
                     ?.AsEntity();
 
         public async Task<User> GetAsync(string email)
-            => (await _repository.GetAsync(user => user.Email == email))
+            => (await _repository.GetAsync(document => document.Email == email))
                     ?.AsEntity();
 
         public async Task<bool> ExistsAsync(Guid id)

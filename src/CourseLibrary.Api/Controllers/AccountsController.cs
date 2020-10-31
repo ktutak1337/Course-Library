@@ -19,6 +19,10 @@ namespace CourseLibrary.Api.Controllers
         public async Task<IActionResult> Get([FromRoute] GetUser query) 
             => Select(await Dispatcher.QueryAsync(query));
 
+        [HttpGet]
+        public async Task<IActionResult> Get([FromRoute] GetUsers query) 
+            => Select(await Dispatcher.QueryAsync(query));
+
         [HttpPost("sign-up")]
         [AllowAnonymous]
         public async Task<IActionResult> Post(SignUp command)
