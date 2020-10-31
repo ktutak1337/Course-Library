@@ -9,8 +9,11 @@ namespace CourseLibrary.Api.Controllers
 {
     public class AccountsController : BaseController
     {
-        public AccountsController(IDispatcher dispatcher) 
-            : base(dispatcher) { }
+        private readonly IAccountService _accountService;
+
+        public AccountsController(IDispatcher dispatcher, IAccountService accountService)
+            : base(dispatcher) 
+                => _accountService = accountService;
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] GetUser query) 
@@ -24,5 +27,10 @@ namespace CourseLibrary.Api.Controllers
         
             return CreatedAtAction(nameof(Get), new { Id = command.Id }, command.Id);
         }
+
+        [HttpPost("sign-in")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Post(SignIn command)
+            => Ok(await _accountService.SignInAsync(command));
     }
 }
