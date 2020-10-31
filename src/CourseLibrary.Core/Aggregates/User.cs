@@ -12,17 +12,15 @@ namespace CourseLibrary.Core.Aggregates
         public string Role { get; private set; }
         public bool IsActive { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
 
-        public User(UserId id, string email, string password, string role, bool isActive = true, DateTime? createdAt = null, DateTime? updatedAt = null)
+        public User(UserId id, string email, string password, string role, DateTime createdAt, bool isActive = true)
         {
             Id = id;       
             SetEmail(email.ToLowerInvariant());
             SetPassword(password);
             SetRole(role.ToLowerInvariant());
             IsActive = isActive;
-            CreatedAt = createdAt ?? DateTime.UtcNow;
-            UpdatedAt = updatedAt ?? DateTime.UtcNow;
+            CreatedAt = createdAt;
         }
 
         private void SetEmail(string email)
@@ -31,6 +29,8 @@ namespace CourseLibrary.Core.Aggregates
             {
                 throw new InvalidEmailException(email);
             }
+
+            Email = email;
         }
 
         private void SetPassword(string password)
@@ -39,6 +39,8 @@ namespace CourseLibrary.Core.Aggregates
             {
                 throw new InvalidCredentialsException();
             }
+
+            Password = password;
         }
 
         private void SetRole(string role)
@@ -47,6 +49,13 @@ namespace CourseLibrary.Core.Aggregates
             {
                 throw new InvalidRoleException(role);
             }
+
+            Role = role;
+        }
+
+        public void ChangePassword(string password)
+        {
+            SetPassword(password);
         }
     }
 }

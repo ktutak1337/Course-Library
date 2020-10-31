@@ -4,14 +4,14 @@ using CourseLibrary.Application.Services;
 
 namespace CourseLibrary.Application.Commands.Identity.Handlers
 {
-    public class SignUpHandler : ICommandHandler<SignUp>
+    public class ChangePasswordHandler : ICommandHandler<ChangePassword>
     {
         private readonly IAccountService _accountService;
 
-        public SignUpHandler(IAccountService accountService) 
+        public ChangePasswordHandler(IAccountService accountService) 
             => _accountService = accountService;
 
-        public async Task HandleAsync(SignUp command)
-            => await _accountService.SignUpAsync(command);
+        public async Task HandleAsync(ChangePassword command) 
+            => await _accountService.ChangePasswordAsync(command);
     }
 }

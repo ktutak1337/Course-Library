@@ -1,4 +1,6 @@
+using System;
 using CourseLibrary.Application.Services;
+using CourseLibrary.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseLibrary.Api.Controllers
@@ -8,6 +10,10 @@ namespace CourseLibrary.Api.Controllers
     public abstract class BaseController : ControllerBase
     {
         protected readonly IDispatcher Dispatcher;
+        protected Guid UserId
+            => (User?.Identity?.Name).IsEmpty() 
+                ? Guid.Empty 
+                : Guid.Parse(User.Identity.Name);
 
         protected BaseController(IDispatcher dispatcher) 
             => Dispatcher = dispatcher;
