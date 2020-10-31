@@ -52,5 +52,10 @@ namespace CourseLibrary.Core.Aggregates
 
             Role = role;
         }
+
+        public void ChangePassword(string password)
+        {
+            SetPassword(password);
+        }
     }
 }

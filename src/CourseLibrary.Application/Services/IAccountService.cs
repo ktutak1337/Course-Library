@@ -8,5 +8,6 @@ namespace CourseLibrary.Application.Services
     {
         Task<AuthDto> SignInAsync(SignIn command);
         Task SignUpAsync(SignUp command);
+        Task ChangePasswordAsync(ChangePassword command);
     }
 }

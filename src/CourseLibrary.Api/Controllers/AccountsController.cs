@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Convey.Auth;
 using CourseLibrary.Application.Commands.Identity;
 using CourseLibrary.Application.Queries.Identity;
 using CourseLibrary.Application.Services;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CourseLibrary.Api.Controllers
 {
+    [JwtAuth]
     public class AccountsController : BaseController
     {
         private readonly IAccountService _accountService;
@@ -36,5 +38,15 @@ namespace CourseLibrary.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Post(SignIn command)
             => Ok(await _accountService.SignInAsync(command));
+
+        [HttpPut("me/change-password")]
+        public async Task<IActionResult> Put(ChangePassword command)
+        {
+            command.UserId = UserId;
+
+            await Dispatcher.SendAsync(command);
+        
+            return NoContent();
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CourseLibrary.Application.Commands.Identity;
 using CourseLibrary.Application.DTOs.Identity;
+using CourseLibrary.Application.Exceptions;
 using CourseLibrary.Core;
 using CourseLibrary.Core.Aggregates;
 using CourseLibrary.Core.Exceptions.Identity;
@@ -59,6 +60,26 @@ namespace CourseLibrary.Application.Services.Identity
             user = new User(command.Id, command.Email, hashedPassword, role, createdAt: DateTime.UtcNow);
             
             await _usersRepository.AddAsync(user);
+        }
+
+        public async Task ChangePasswordAsync(ChangePassword command)
+        {
+            var user = await _usersRepository.GetAsync(command.UserId);
+
+            if(user is null)
+            {
+                throw new UserNotFoundException(command.UserId);
+            }
+            
+            if (!_passwordService.Verify(user.Password, command.CurrentPassword))
+            {
+                throw new InvalidCredentialsException();
+            }
+            
+            var hashedPassword = _passwordService.HashPassword(command.NewPassword);
+            user.ChangePassword(hashedPassword);
+            
+            await _usersRepository.UpdateAsync(user);
         }
     }
 }
