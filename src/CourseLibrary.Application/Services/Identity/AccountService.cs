@@ -57,7 +57,7 @@ namespace CourseLibrary.Application.Services.Identity
             var hashedPassword = _passwordService.HashPassword(command.Password);
             var role = command.Role.IsEmpty() ? "user" : command.Role.ToLowerInvariant();
 
-            user = new User(command.Id, command.Email, hashedPassword, role, createdAt: DateTime.UtcNow);
+            user = new User(command.Id, command.FirstName, command.LastName, command.Email, hashedPassword, role, createdAt: DateTime.UtcNow);
             
             await _usersRepository.AddAsync(user);
         }
