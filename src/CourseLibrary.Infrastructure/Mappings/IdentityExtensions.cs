@@ -10,6 +10,8 @@ namespace CourseLibrary.Infrastructure.Mappings
             => new UserDocument
             {
                 Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Email = user.Email,
                 Password = user.Password,
                 Role = user.Role,
@@ -20,6 +22,8 @@ namespace CourseLibrary.Infrastructure.Mappings
         public static User AsEntity(this UserDocument document)
             => new User(
                 document.Id,
+                document.FirstName,
+                document.LastName,
                 document.Email,
                 document.Password,
                 document.Role,
@@ -30,6 +34,8 @@ namespace CourseLibrary.Infrastructure.Mappings
             => new UserDto
             {
                 Id = document.Id,
+                FirstName = document.FirstName,
+                LastName = document.LastName,
                 Email = document.Email,
                 Password = document.Password,
                 Role = document.Role,
