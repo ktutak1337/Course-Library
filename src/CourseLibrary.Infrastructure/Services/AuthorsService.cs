@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Convey.Persistence.MongoDB;
+using CourseLibrary.Application.Commands.Author;
 using CourseLibrary.Application.DTOs;
 using CourseLibrary.Application.Services;
 using CourseLibrary.Infrastructure.Exceptions;
@@ -26,18 +27,40 @@ namespace CourseLibrary.Infrastructure.Services
             => (await _repository.FindAsync(_ => true))
                 ?.Select(order => order.AsDto());
 
-        public async Task CreateAsync(AuthorDto author)
+        public async Task CreateAsync(CreateAuthor command)
         {
-            if(await _repository.ExistsAsync(document => document.Id == author.Id))
+            if(await _repository.ExistsAsync(document => document.Id == command.Id))
             {
-                throw new AuthorAlreadyExistsException(author.Id);
+                throw new AuthorAlreadyExistsException(command.Id);
             }
+
+            var author = new AuthorDto
+            {
+                Id = command.Id, 
+                FullName = command.FullName, 
+                ImageUrl = command.ImageUrl,
+                Description = command.Description, 
+                CreatedAt = DateTime.UtcNow
+            };
 
             await _repository.AddAsync(author.AsDocument());
         }
 
-        public async Task UpdateAsync(AuthorDto author)
-            => await _repository.UpdateAsync(author.AsDocument());
+        public async Task UpdateAsync(UpdateAuthor command)
+        {
+            var author = await _repository.GetAsync(command.Id);
+            
+            if(author is null)
+            {
+                throw new AuthorNotFoundException(command.Id);
+            }
+
+            author.FullName = command.FullName;
+            author.ImageUrl = command.ImageUrl;
+            author.Description = command.Description;
+
+            await _repository.UpdateAsync(author);
+        }
 
         public async Task DeleteAsync(Guid id)
             => await _repository.DeleteAsync(id);

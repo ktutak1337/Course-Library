@@ -15,6 +15,7 @@ using Convey.Auth;
 using CourseLibrary.Infrastructure.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using CourseLibrary.Application.Services.Identity;
+using CourseLibrary.Infrastructure.Persistence.Mongo.Documents;
 
 namespace CourseLibrary.Infrastructure
 {
@@ -26,7 +27,8 @@ namespace CourseLibrary.Infrastructure
             
             return builder
                 .AddMongo()
-                .AddMongoRepository<UserDocument, Guid>("users");
+                .AddMongoRepository<UserDocument, Guid>("users")
+                .AddMongoRepository<AuthorDocument, Guid>("authors");
         }
         
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
@@ -36,6 +38,7 @@ namespace CourseLibrary.Infrastructure
             services.AddSingleton<IPasswordHasher<IPasswordService>, PasswordHasher<IPasswordService>>();
             
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IAuthorsService, AuthorsService>();
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IDispatcher, Dispatcher>();
 

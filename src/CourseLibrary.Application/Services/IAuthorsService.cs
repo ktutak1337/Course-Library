@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CourseLibrary.Application.Commands.Author;
 using CourseLibrary.Application.DTOs;
 
 namespace CourseLibrary.Application.Services
@@ -9,8 +10,8 @@ namespace CourseLibrary.Application.Services
     {
         Task<AuthorDto> GetAsync(Guid id);
         Task<IEnumerable<AuthorDto>> GetAuthorsAsync();
-        Task CreateAsync(AuthorDto author);
-        Task UpdateAsync(AuthorDto author);
+        Task CreateAsync(CreateAuthor command);
+        Task UpdateAsync(UpdateAuthor command);
         Task DeleteAsync(Guid id);
     }
 }
