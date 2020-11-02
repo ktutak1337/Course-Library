@@ -1,4 +1,5 @@
 using CourseLibrary.Core.BuildingBlocks;
+using CourseLibrary.Core.Exceptions.ParticipationInCourse;
 using CourseLibrary.Core.ValueObjects;
 
 namespace CourseLibrary.Core.Entities
@@ -13,7 +14,7 @@ namespace CourseLibrary.Core.Entities
         {
             Id = id;
             CourseId = courseId;
-            Progress = progress;
+            Progress = progress ?? throw new EmptyProgressException(id);
         }
     }
 }

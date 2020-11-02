@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using CourseLibrary.Core.BuildingBlocks;
 using CourseLibrary.Core.Entities;
+using CourseLibrary.Core.Exceptions.Student;
 
 namespace CourseLibrary.Core.Aggregates
 {
@@ -17,6 +19,27 @@ namespace CourseLibrary.Core.Aggregates
         {
             get { return _courses; }
             private set { _courses = new HashSet<ParticipationInCourse>(value); }
+        }
+
+        public Student(StudentId id, UserId userId, string firstName, string lastName, IEnumerable<ParticipationInCourse> courses = null)
+        {
+            Id = id;
+            UserId = userId;
+
+            if(firstName.IsEmpty())
+            {
+                throw new EmptyStudentFirstNameException(id, userId);
+            }
+
+            FirstName = firstName;
+
+            if(lastName.IsEmpty())
+            {
+                throw new EmptyStudentLastNameException(id, userId);
+            }
+
+            LastName = lastName;
+            Courses = courses ?? Enumerable.Empty<ParticipationInCourse>();
         }
     }
 }
