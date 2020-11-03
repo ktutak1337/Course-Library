@@ -15,6 +15,8 @@ namespace CourseLibrary.Core.Aggregates
         public bool IsActive { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
+        private User() { }
+        
         public User(UserId id, string firstName, string lastName, string email, string password, string role, DateTime createdAt, bool isActive = true)
         {
             Id = id;

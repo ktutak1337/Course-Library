@@ -21,6 +21,8 @@ namespace CourseLibrary.Core.Entities
             private set { _videos = new HashSet<Video>(value); }
         }
 
+        private Module() { }
+
         public Module(ModuleId id, string name, string description, IEnumerable<Video> videos, DateTime createdAt)
         {
             Id = id;

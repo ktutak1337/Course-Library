@@ -10,6 +10,8 @@ namespace CourseLibrary.Core.Entities
         public CourseId CourseId { get; private set; }
         public Progress Progress { get; private set; }
 
+        private ParticipationInCourse() { }
+        
         public ParticipationInCourse(ParticipationInCourseId id, CourseId courseId, Progress progress)
         {
             Id = id;

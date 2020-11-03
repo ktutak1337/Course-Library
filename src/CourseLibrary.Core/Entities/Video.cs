@@ -12,6 +12,8 @@ namespace CourseLibrary.Core.Entities
         public string ThumbnailUrl { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
+        private Video() { }
+
         public Video(VideoId id, string name, string videoUrl, string thumbnailUrl, DateTime createdAt)
         {
             Id = id;

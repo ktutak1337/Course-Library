@@ -30,6 +30,8 @@ namespace CourseLibrary.Core.Aggregates
             private set { _authors = new HashSet<Author>(value); }
         }
 
+        private Course() { }
+        
         public Course(CourseId id, string name, string description, string category, DateTime createdAt,
             IEnumerable<Module> modules, IEnumerable<Author> authors)
         {
