@@ -44,6 +44,15 @@ namespace CourseLibrary.Core.Aggregates
             CreatedAt = createdAt;
         }
 
+        public void Update(Course course)
+        {
+            Name = course.Name;
+            Description = course.Description;
+            Category = course.Category;
+            Modules = course.Modules;
+            Authors = course.Authors;
+        }
+
         private void SetName(string name)
         {
             if(name.IsEmpty())

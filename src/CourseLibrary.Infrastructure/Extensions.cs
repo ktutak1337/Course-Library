@@ -16,6 +16,7 @@ using CourseLibrary.Infrastructure.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using CourseLibrary.Application.Services.Identity;
 using CourseLibrary.Infrastructure.Persistence.Mongo.Documents;
+using CourseLibrary.Infrastructure.Persistence.Mongo.Repositories;
 
 namespace CourseLibrary.Infrastructure
 {
@@ -28,7 +29,8 @@ namespace CourseLibrary.Infrastructure
             return builder
                 .AddMongo()
                 .AddMongoRepository<UserDocument, Guid>("users")
-                .AddMongoRepository<AuthorDocument, Guid>("authors");
+                .AddMongoRepository<AuthorDocument, Guid>("authors")
+                .AddMongoRepository<CourseDocument, Guid>("courses");
         }
         
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
@@ -40,6 +42,7 @@ namespace CourseLibrary.Infrastructure
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthorsService, AuthorsService>();
             services.AddTransient<IUsersRepository, UsersRepository>();
+            services.AddTransient<ICoursesRepository, CoursesRepository>();
             services.AddTransient<IDispatcher, Dispatcher>();
 
             services.AddSwaggerDocs();
