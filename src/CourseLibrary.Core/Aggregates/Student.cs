@@ -11,7 +11,6 @@ namespace CourseLibrary.Core.Aggregates
     {
         private ISet<ParticipationInCourse> _courses = new HashSet<ParticipationInCourse>();
 
-        public StudentId Id { get; private set; }
         public UserId UserId { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -25,22 +24,21 @@ namespace CourseLibrary.Core.Aggregates
 
         private Student() { }
 
-        public Student(StudentId id, UserId userId, string firstName, string lastName, DateTime createdAt, 
+        public Student(UserId userId, string firstName, string lastName, DateTime createdAt, 
             IEnumerable<ParticipationInCourse> courses = null)
         {
-            Id = id;
             UserId = userId;
 
             if(firstName.IsEmpty())
             {
-                throw new EmptyStudentFirstNameException(id, userId);
+                throw new EmptyStudentFirstNameException(userId);
             }
 
             FirstName = firstName;
 
             if(lastName.IsEmpty())
             {
-                throw new EmptyStudentLastNameException(id, userId);
+                throw new EmptyStudentLastNameException(userId);
             }
 
             LastName = lastName;

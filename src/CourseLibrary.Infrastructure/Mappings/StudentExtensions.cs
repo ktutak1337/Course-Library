@@ -12,7 +12,6 @@ namespace CourseLibrary.Infrastructure.Mappings
         public static StudentDocument AsDocument(this Student student)
             => new StudentDocument
             {
-                Id = student.Id,
                 UserId = student.UserId,
                 FirstName = student.FirstName,
                 LastName = student.LastName,
@@ -30,7 +29,6 @@ namespace CourseLibrary.Infrastructure.Mappings
 
         public static Student AsEntity(this StudentDocument document)
             => new Student(
-                document.Id,
                 document.UserId,
                 document.FirstName,
                 document.LastName,
@@ -44,7 +42,6 @@ namespace CourseLibrary.Infrastructure.Mappings
         public static StudentDto AsDto(this StudentDocument document)
             => new StudentDto
             {
-                Id = document.Id,
                 UserId = document.UserId,
                 FirstName = document.FirstName,
                 LastName = document.LastName,
