@@ -14,7 +14,7 @@ namespace CourseLibrary.Core.Entities
 
         private Video() { }
 
-        public Video(VideoId id, string name, string videoUrl, string thumbnailUrl, DateTime createdAt)
+        public Video(VideoId id, string name, string videoUrl, string thumbnailUrl, DateTime? createdAt = null)
         {
             Id = id;
 
@@ -38,7 +38,7 @@ namespace CourseLibrary.Core.Entities
             }
 
             ThumbnailUrl = thumbnailUrl;
-            CreatedAt = createdAt;
+            CreatedAt = createdAt ?? DateTime.UtcNow;
         }
     }
 }

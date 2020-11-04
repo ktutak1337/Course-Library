@@ -11,6 +11,6 @@ namespace CourseLibrary.Application.DTOs
         public string Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public IEnumerable<ModuleDto> Modules { get; set; }
-        public IEnumerable<AuthorDto> Authors { get; set; }
+        public IEnumerable<CourseAuthorDto> Authors { get; set; }
     }
 }

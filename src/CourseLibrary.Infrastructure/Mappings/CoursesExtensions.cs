@@ -31,6 +31,12 @@ namespace CourseLibrary.Infrastructure.Mappings
                         CreatedAt = video.CreatedAt
                     })
                 }),
+                Authors = course.Authors.Select(author => new AuthorDocument
+                {
+                    FullName = author.FullName,
+                    Description = author.Description,
+                    ImageUrl = author.ImageUrl
+                }),
                 CreatedAt = course.CreatedAt
             };
 
@@ -81,6 +87,13 @@ namespace CourseLibrary.Infrastructure.Mappings
                         ThumbnailUrl = video.ThumbnailUrl,
                         CreatedAt = video.CreatedAt
                     })
+                }),
+                Authors = document.Authors.Select(author => new CourseAuthorDto
+                {
+                    FullName = author.FullName,
+                    Description = author.Description,
+                    ImageUrl = author.ImageUrl
+
                 }),
                 CreatedAt = document.CreatedAt
             };
