@@ -21,7 +21,9 @@ namespace CourseLibrary.Core.Entities
             private set { _videos = new HashSet<Video>(value); }
         }
 
-        public Module(ModuleId id, string name, string description, IEnumerable<Video> videos, DateTime createdAt)
+        private Module() { }
+
+        public Module(ModuleId id, string name, string description, IEnumerable<Video> videos, DateTime? createdAt = null)
         {
             Id = id;
 
@@ -39,7 +41,7 @@ namespace CourseLibrary.Core.Entities
 
             Description = description;
             Videos = videos ?? throw new EmptyVideosException(id);
-            CreatedAt = createdAt;
+            CreatedAt = createdAt ?? DateTime.UtcNow;
         }
     }
 }

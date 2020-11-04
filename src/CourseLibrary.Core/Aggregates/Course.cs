@@ -30,6 +30,8 @@ namespace CourseLibrary.Core.Aggregates
             private set { _authors = new HashSet<Author>(value); }
         }
 
+        private Course() { }
+        
         public Course(CourseId id, string name, string description, string category, DateTime createdAt,
             IEnumerable<Module> modules, IEnumerable<Author> authors)
         {
@@ -40,6 +42,15 @@ namespace CourseLibrary.Core.Aggregates
             Modules = modules ?? throw new EmptyModulesException(id);
             Authors = authors ?? throw new EmptyAuthorsException(id);
             CreatedAt = createdAt;
+        }
+
+        public void Update(Course course)
+        {
+            Name = course.Name;
+            Description = course.Description;
+            Category = course.Category;
+            Modules = course.Modules;
+            Authors = course.Authors;
         }
 
         private void SetName(string name)

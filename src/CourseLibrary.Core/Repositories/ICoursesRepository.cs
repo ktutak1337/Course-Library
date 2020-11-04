@@ -5,13 +5,13 @@ using CourseLibrary.Core.Aggregates;
 
 namespace CourseLibrary.Core.Repositories
 {
-    public interface IStudentsRepository
+    public interface ICoursesRepository
     {
-        Task<Student> GetAsync(Guid id);
-        Task<IEnumerable<Student>> BrowseAsync();
+        Task<Course> GetAsync(Guid id);
+        Task<IEnumerable<Course>> BrowseAsync();
         Task<bool> ExistsAsync(Guid id);
-        Task AddAsync(Student student);
-        Task UpdateAsync(Student student);
+        Task AddAsync(Course course);
+        Task UpdateAsync(Course course);
         Task DeleteAsync(Guid id);
     }
 }
