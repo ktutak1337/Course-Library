@@ -1,14 +1,14 @@
 using System.Threading.Tasks;
-using Convey.Auth;
 using CourseLibrary.Application.Commands.Identity;
 using CourseLibrary.Application.Queries.Identity;
 using CourseLibrary.Application.Services;
+using CourseLibrary.Application.Services.Identity;
+using CourseLibrary.Core.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseLibrary.Api.Controllers
 {
-    [JwtAuth]
     public class AccountsController : BaseController
     {
         private readonly IAccountService _accountService;
@@ -18,10 +18,12 @@ namespace CourseLibrary.Api.Controllers
                 => _accountService = accountService;
 
         [HttpGet("{id}")]
+        [Allow(Role.Admin, Role.User)]
         public async Task<IActionResult> Get([FromRoute] GetUser query) 
             => Select(await Dispatcher.QueryAsync(query));
 
         [HttpGet]
+        [Allow(Role.Admin, Role.User)]
         public async Task<IActionResult> Get([FromRoute] GetUsers query) 
             => Select(await Dispatcher.QueryAsync(query));
 
@@ -40,6 +42,7 @@ namespace CourseLibrary.Api.Controllers
             => Ok(await _accountService.SignInAsync(command));
 
         [HttpPut("me/change-password")]
+        [Allow(Role.Admin, Role.User)]
         public async Task<IActionResult> Put(ChangePassword command)
         {
             command.UserId = UserId;

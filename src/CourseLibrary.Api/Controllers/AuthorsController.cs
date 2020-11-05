@@ -3,10 +3,13 @@ using System.Threading.Tasks;
 using CourseLibrary.Application.Commands.Author;
 using CourseLibrary.Application.Queries;
 using CourseLibrary.Application.Services;
+using CourseLibrary.Application.Services.Identity;
+using CourseLibrary.Core.Types;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseLibrary.Api.Controllers
 {
+    [Allow(Role.Admin, Role.User)]
     public class AuthorsController : BaseController
     {
         public AuthorsController(IDispatcher dispatcher) 
