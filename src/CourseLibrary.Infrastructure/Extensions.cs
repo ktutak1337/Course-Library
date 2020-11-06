@@ -31,7 +31,8 @@ namespace CourseLibrary.Infrastructure
                 .AddMongoRepository<UserDocument, Guid>("users")
                 .AddMongoRepository<AuthorDocument, Guid>("authors")
                 .AddMongoRepository<CourseDocument, Guid>("courses")
-                .AddMongoRepository<StudentDocument, Guid>("students");
+                .AddMongoRepository<StudentDocument, Guid>("students")
+                .AddMongoRepository<CategoryDocument, Guid>("categories");
         }
         
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
@@ -40,12 +41,15 @@ namespace CourseLibrary.Infrastructure
             services.AddSingleton<IPasswordService, PasswordService>();
             services.AddSingleton<IPasswordHasher<IPasswordService>, PasswordHasher<IPasswordService>>();
             
+            services.AddTransient<IDispatcher, Dispatcher>();
+
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthorsService, AuthorsService>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
+
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<ICoursesRepository, CoursesRepository>();
             services.AddTransient<IStudentsRepository, StudentsRepository>();
-            services.AddTransient<IDispatcher, Dispatcher>();
 
             services.AddSwaggerDocs();
             

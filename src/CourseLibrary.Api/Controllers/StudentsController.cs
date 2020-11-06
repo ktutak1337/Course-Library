@@ -9,21 +9,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CourseLibrary.Api.Controllers
 {
-    [Allow(Role.Admin, Role.User)]
     public class StudentsController : BaseController
     {
         public StudentsController(IDispatcher dispatcher) 
             : base(dispatcher) { }
 
         [HttpGet("{userId}")]
+        [Allow(Role.Admin, Role.User)]
         public async Task<IActionResult> Get([FromRoute] GetStudent query) 
             => Select(await Dispatcher.QueryAsync(query));
 
         [HttpGet]
+        [Allow(Role.Admin, Role.User)]
         public async Task<IActionResult> Get([FromRoute] GetStudents query) 
             => Select(await Dispatcher.QueryAsync(query));
 
         [HttpPost("{userId}")]
+        [Allow(Role.Admin)]
         public async Task<IActionResult> Post(CreateStudent command)
         {
             await Dispatcher.SendAsync(command);

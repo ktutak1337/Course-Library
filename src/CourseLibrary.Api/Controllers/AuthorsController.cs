@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CourseLibrary.Api.Controllers
 {
-    [Allow(Role.Admin, Role.User)]
+    [Allow(Role.Admin)]
     public class AuthorsController : BaseController
     {
         public AuthorsController(IDispatcher dispatcher) 
