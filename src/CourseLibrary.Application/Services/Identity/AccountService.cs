@@ -16,12 +16,13 @@ namespace CourseLibrary.Application.Services.Identity
         private readonly IUsersRepository _usersRepository;
         private readonly IPasswordService _passwordService;
         private readonly IJwtBroker _jwtBroker;
+        private readonly IRefreshTokenService _refreshTokenService;
         private static readonly Regex EmailRegex = new Regex(
             @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
             RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        public AccountService(IUsersRepository usersRepository, IPasswordService passwordService, IJwtBroker jwtBroker)
-            => (_usersRepository, _passwordService, _jwtBroker) = (usersRepository, passwordService, jwtBroker);
+        public AccountService(IUsersRepository usersRepository, IPasswordService passwordService, IJwtBroker jwtBroker, IRefreshTokenService refreshTokenService)
+            => (_usersRepository, _passwordService, _jwtBroker, _refreshTokenService) = (usersRepository, passwordService, jwtBroker, refreshTokenService);
 
         public async Task<AuthDto> SignInAsync(SignIn command)
         {
@@ -37,7 +38,10 @@ namespace CourseLibrary.Application.Services.Identity
                 throw new InvalidCredentialsException();
             }
 
-            return _jwtBroker.CreateToken(user.Id, user.Role);
+            var auth = _jwtBroker.CreateToken(user.Id, user.Role);
+            auth.RefreshToken = await _refreshTokenService.CreateAsync(user.Id);
+
+            return auth;
         }
 
         public async Task SignUpAsync(SignUp command)

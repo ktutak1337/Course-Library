@@ -41,6 +41,19 @@ namespace CourseLibrary.Infrastructure.Mappings
                 Role = document.Role,
                 IsActive = document.IsActive,
                 CreatedAt = document.CreatedAt
-            };   
+            };
+        
+        public static RefreshToken AsEntity(this RefreshTokenDocument document)
+            => new RefreshToken(document.Id, document.UserId, document.Token, document.CreatedAt, document.RevokedAt);
+        
+        public static RefreshTokenDocument AsDocument(this RefreshToken refreshToken)
+            => new RefreshTokenDocument
+            {
+                Id = refreshToken.Id,
+                UserId = refreshToken.UserId,
+                Token = refreshToken.Token,
+                CreatedAt = refreshToken.CreatedAt,
+                RevokedAt = refreshToken.RevokedAt
+            };
     }
 }
