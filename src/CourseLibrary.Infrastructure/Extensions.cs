@@ -32,7 +32,8 @@ namespace CourseLibrary.Infrastructure
                 .AddMongoRepository<AuthorDocument, Guid>("authors")
                 .AddMongoRepository<CourseDocument, Guid>("courses")
                 .AddMongoRepository<StudentDocument, Guid>("students")
-                .AddMongoRepository<CategoryDocument, Guid>("categories");
+                .AddMongoRepository<CategoryDocument, Guid>("categories")
+                .AddMongoRepository<RefreshTokenDocument, Guid>("refreshTokens");;
         }
         
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
@@ -46,10 +47,12 @@ namespace CourseLibrary.Infrastructure
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthorsService, AuthorsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
-
+            services.AddTransient<IRefreshTokenService, RefreshTokenService>();
+            
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<ICoursesRepository, CoursesRepository>();
             services.AddTransient<IStudentsRepository, StudentsRepository>();
+            services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
 
             services.AddSwaggerDocs();
             
