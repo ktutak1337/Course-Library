@@ -41,9 +41,9 @@ namespace CourseLibrary.Api.Controllers
         public async Task<IActionResult> Post(SignIn command)
             => Ok(await _accountService.SignInAsync(command));
 
-        [HttpPut("me/change-password")]
+        [HttpPatch("me/change-password")]
         [Allow(Role.Admin, Role.User)]
-        public async Task<IActionResult> Put(ChangePassword command)
+        public async Task<IActionResult> Patch(ChangePassword command)
         {
             command.UserId = UserId;
 

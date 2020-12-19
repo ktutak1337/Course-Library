@@ -1,19 +1,15 @@
-using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CourseLibrary.Application.Commands.Identity;
 using CourseLibrary.Application.DTOs.Identity;
 using CourseLibrary.Application.Exceptions;
-using CourseLibrary.Core;
-using CourseLibrary.Core.Aggregates;
 using CourseLibrary.Core.Exceptions.Identity;
-using CourseLibrary.Core.Repositories;
 
 namespace CourseLibrary.Application.Services.Identity
 {
     public class AccountService : IAccountService
     {
-        private readonly IUsersRepository _usersRepository;
+        private readonly IUsersService _usersService;
         private readonly IPasswordService _passwordService;
         private readonly IJwtBroker _jwtBroker;
         private readonly IRefreshTokenService _refreshTokenService;
@@ -21,8 +17,8 @@ namespace CourseLibrary.Application.Services.Identity
             @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
             RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        public AccountService(IUsersRepository usersRepository, IPasswordService passwordService, IJwtBroker jwtBroker, IRefreshTokenService refreshTokenService)
-            => (_usersRepository, _passwordService, _jwtBroker, _refreshTokenService) = (usersRepository, passwordService, jwtBroker, refreshTokenService);
+        public AccountService(IUsersService usersService, IPasswordService passwordService, IJwtBroker jwtBroker, IRefreshTokenService refreshTokenService)
+            => (_usersService, _passwordService, _jwtBroker, _refreshTokenService) = (usersService, passwordService, jwtBroker, refreshTokenService);
 
         public async Task<AuthDto> SignInAsync(SignIn command)
         {
@@ -31,7 +27,7 @@ namespace CourseLibrary.Application.Services.Identity
                 throw new InvalidEmailException(command.Email);
             }
 
-            var user = await _usersRepository.GetAsync(command.Email);
+            var user = await _usersService.GetAsync(command.Email);
 
             if(user is null || !_passwordService.Verify(user.Password, command.Password))
             {
@@ -45,30 +41,11 @@ namespace CourseLibrary.Application.Services.Identity
         }
 
         public async Task SignUpAsync(SignUp command)
-        {
-            if (!EmailRegex.IsMatch(command.Email))
-            {
-                throw new InvalidEmailException(command.Email);
-            }
-
-            var user = await _usersRepository.GetAsync(command.Email);
-
-            if(user != null)
-            {
-                throw new EmailAddressInUseException(command.Email);
-            }
-
-            var hashedPassword = _passwordService.HashPassword(command.Password);
-            var role = command.Role.IsEmpty() ? "user" : command.Role.ToLowerInvariant();
-
-            user = new User(command.Id, command.FirstName, command.LastName, command.Email, hashedPassword, role, createdAt: DateTime.UtcNow);
-            
-            await _usersRepository.AddAsync(user);
-        }
+            => await _usersService.CreateAsync(command);
 
         public async Task ChangePasswordAsync(ChangePassword command)
         {
-            var user = await _usersRepository.GetAsync(command.UserId);
+            var user = await _usersService.GetAsync(command.UserId);
 
             if(user is null)
             {
@@ -80,10 +57,9 @@ namespace CourseLibrary.Application.Services.Identity
                 throw new InvalidCredentialsException();
             }
             
-            var hashedPassword = _passwordService.HashPassword(command.NewPassword);
-            user.ChangePassword(hashedPassword);
-            
-            await _usersRepository.UpdateAsync(user);
+            user.Password = _passwordService.HashPassword(command.NewPassword);
+
+            await _usersService.UpdateAsync(user);
         }
     }
 }

@@ -13,13 +13,13 @@ namespace CourseLibrary.Application.Services.Identity
     public class RefreshTokenService : IRefreshTokenService
     {
         private readonly IRefreshTokensRepository _refreshTokensRepository;
-        private readonly IUsersRepository _usersRepository;
+        private readonly IUsersService _usersService;
         private readonly IJwtBroker _jwtBroker;
         
-        public RefreshTokenService(IRefreshTokensRepository refreshTokensRepository, IUsersRepository usersRepository, IJwtBroker jwtBroker)
+        public RefreshTokenService(IRefreshTokensRepository refreshTokensRepository, IUsersService usersService, IJwtBroker jwtBroker)
         {
             _refreshTokensRepository = refreshTokensRepository;
-            _usersRepository = usersRepository;
+            _usersService = usersService;
             _jwtBroker = jwtBroker;
         }
         
@@ -59,7 +59,7 @@ namespace CourseLibrary.Application.Services.Identity
                 throw new RevokedRefreshTokenException(token.Id);
             }
 
-            var user = await _usersRepository.GetAsync(token.UserId);
+            var user = await _usersService.GetAsync(token.UserId);
             
             if (user is null)
             {

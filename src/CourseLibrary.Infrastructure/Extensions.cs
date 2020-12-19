@@ -44,12 +44,12 @@ namespace CourseLibrary.Infrastructure
             
             services.AddTransient<IDispatcher, Dispatcher>();
 
+            services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthorsService, AuthorsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IRefreshTokenService, RefreshTokenService>();
             
-            services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<ICoursesRepository, CoursesRepository>();
             services.AddTransient<IStudentsRepository, StudentsRepository>();
             services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();

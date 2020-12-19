@@ -6,7 +6,7 @@ namespace CourseLibrary.Infrastructure.Mappings
 {
     public static class IdentityExtensions
     {
-        public static UserDocument AsDocument(this User user)
+        public static UserDocument AsDocument(this UserDto user)
             => new UserDocument
             {
                 Id = user.Id,
@@ -18,17 +18,6 @@ namespace CourseLibrary.Infrastructure.Mappings
                 IsActive = user.IsActive,
                 CreatedAt = user.CreatedAt,
             };
-
-        public static User AsEntity(this UserDocument document)
-            => new User(
-                document.Id,
-                document.FirstName,
-                document.LastName,
-                document.Email,
-                document.Password,
-                document.Role,
-                document.CreatedAt,
-                document.IsActive);
 
         public static UserDto AsDto(this UserDocument document)
             => new UserDto

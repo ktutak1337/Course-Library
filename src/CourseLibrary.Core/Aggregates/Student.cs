@@ -45,5 +45,8 @@ namespace CourseLibrary.Core.Aggregates
             CreatedAt = createdAt;
             Courses = courses ?? Enumerable.Empty<ParticipationInCourse>();
         }
+
+        public void UpdateDetails(string firstName, string lastName)
+            => (FirstName, LastName) = (firstName, lastName);
     }
 }
