@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Convey.CQRS.Commands;
 using CourseLibrary.Application.Exceptions;
+using CourseLibrary.Application.Services;
 using CourseLibrary.Core.Repositories;
 
 namespace CourseLibrary.Application.Commands.Student.Handlers
@@ -9,14 +10,14 @@ namespace CourseLibrary.Application.Commands.Student.Handlers
     public class CreateStudentHandler : ICommandHandler<CreateStudent>
     {
         private readonly IStudentsRepository _studentsRepository;
-        private readonly IUsersRepository _usersRepository;
+        private readonly IUsersService _usersService;
 
-        public CreateStudentHandler(IStudentsRepository studentsRepository, IUsersRepository usersRepository)
-            => (_studentsRepository, _usersRepository) = (studentsRepository, usersRepository);
+        public CreateStudentHandler(IStudentsRepository studentsRepository, IUsersService usersService)
+            => (_studentsRepository, _usersService) = (studentsRepository, usersService);
 
         public async Task HandleAsync(CreateStudent command)
         {
-            var user = await _usersRepository.GetAsync(command.UserId);
+            var user = await _usersService.GetAsync(command.UserId);
 
             if(!(user is null))
             {

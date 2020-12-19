@@ -1,5 +1,6 @@
 using System;
 using CourseLibrary.Core.BuildingBlocks;
+using CourseLibrary.Core.Events;
 using CourseLibrary.Core.Exceptions.Identity;
 
 namespace CourseLibrary.Core.Aggregates
@@ -26,6 +27,8 @@ namespace CourseLibrary.Core.Aggregates
             Token = token;
             CreatedAt = createdAt;
             RevokedAt = revokedAt;
+
+            AddDomainEvent(new RefreshTokenCreated(this));
         }
         
         public void Revoke(DateTime revokedAt, Guid id)
@@ -36,6 +39,8 @@ namespace CourseLibrary.Core.Aggregates
             }
 
             RevokedAt = revokedAt;
+
+            AddDomainEvent(new RefreshTokenRevoked(this));
         }
     }
 }

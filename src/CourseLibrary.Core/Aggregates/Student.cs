@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CourseLibrary.Core.BuildingBlocks;
 using CourseLibrary.Core.Entities;
+using CourseLibrary.Core.Events;
 using CourseLibrary.Core.Exceptions.Student;
 
 namespace CourseLibrary.Core.Aggregates
@@ -44,6 +45,16 @@ namespace CourseLibrary.Core.Aggregates
             LastName = lastName;
             CreatedAt = createdAt;
             Courses = courses ?? Enumerable.Empty<ParticipationInCourse>();
+
+            AddDomainEvent(new StudentCreated(this));
+        }
+
+        public void UpdateDetails(string firstName, string lastName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+
+            AddDomainEvent(new StudentDetailsUpdated(this));
         }
     }
 }

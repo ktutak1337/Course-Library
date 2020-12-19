@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CourseLibrary.Core.BuildingBlocks;
 using CourseLibrary.Core.Entities;
+using CourseLibrary.Core.Events;
 using CourseLibrary.Core.Exceptions.Course;
 using CourseLibrary.Core.ValueObjects;
 
@@ -42,6 +43,8 @@ namespace CourseLibrary.Core.Aggregates
             Modules = modules ?? throw new EmptyModulesException(id);
             Authors = authors ?? throw new EmptyAuthorsException(id);
             CreatedAt = createdAt;
+
+            AddDomainEvent(new CourseCreated(this));
         }
 
         public void Update(Course course)
@@ -51,6 +54,8 @@ namespace CourseLibrary.Core.Aggregates
             Category = course.Category;
             Modules = course.Modules;
             Authors = course.Authors;
+
+            AddDomainEvent(new CourseUpdated(this));
         }
 
         private void SetName(string name)
