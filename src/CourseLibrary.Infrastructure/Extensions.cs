@@ -19,6 +19,7 @@ using CourseLibrary.Infrastructure.Persistence.Mongo.Documents;
 using CourseLibrary.Infrastructure.Persistence.Mongo.Repositories;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.IO;
 
 namespace CourseLibrary.Infrastructure
 {
@@ -85,6 +86,12 @@ namespace CourseLibrary.Infrastructure
             return services.AddSwaggerGen(setup =>
             {
                 setup.SwaggerDoc(settings.Name, new OpenApiInfo { Title = settings.Title, Version = settings.Version });
+
+                if(settings.CommentsEnabled)
+                {
+                    var filePath = Path.Combine(System.AppContext.BaseDirectory, "CourseLibrary.Api.xml");
+                    setup.IncludeXmlComments(filePath);
+                }
 
                 if (settings.Authorization)
                 {
