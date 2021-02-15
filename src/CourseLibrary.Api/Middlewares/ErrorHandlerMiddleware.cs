@@ -5,7 +5,6 @@ using CourseLibrary.Core.Exceptions;
 using CourseLibrary.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using ApplicationException = CourseLibrary.Application.Exceptions.ApplicationException;
 
 namespace CourseLibrary.Api.Middlewares
@@ -34,37 +33,22 @@ namespace CourseLibrary.Api.Middlewares
             }
         }
 
-        private static Task HandleErrorAsync(HttpContext context, Exception exception)
+        private async static Task HandleErrorAsync(HttpContext context, Exception exception)
         {
             var errorCode = "Error";
             var message = exception.Message;
-            var statusCode = HttpStatusCode.BadRequest;
-            
-            switch(exception)
+            var statusCode = 400;
+
+            (errorCode, message) = exception switch
             {
-                case InfrastructureException ex:
-                    errorCode = ex.Code;
-                    message = ex.Message;
-                    break;
+                InfrastructureException ex => (ex.Code, ex.Message),
+                ApplicationException ex => (ex.Code, ex.Message),
+                DomainException ex => (ex.Code, ex.Message),
+                _ => ("Error", "There was an error.")
+            };
 
-                case ApplicationException ex:
-                    errorCode = ex.Code;
-                    message = ex.Message;
-                    break;
-
-                case DomainException ex:
-                    errorCode = ex.Code;
-                    message = ex.Message;
-                    break;
-            }
-
-            var response = new { code = errorCode, message = message };
-            var json = JsonConvert.SerializeObject(response);
-            
-            context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
-
-            return context.Response.WriteAsync(json);
+            await context.Response.WriteAsJsonAsync(new {errorCode, message});
         }
     }
 }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,11 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Convey.Auth" Version="0.4.377" />
-    <PackageReference Include="Convey.Persistence.MongoDB" Version="0.4.377" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.1" />	
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
+    <PackageReference Include="Convey.Auth" Version="0.5.427" />
+    <PackageReference Include="Convey.Persistence.MongoDB" Version="0.5.427" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.0.5" />	
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.0.5" />
   </ItemGroup>
 
 </Project>
